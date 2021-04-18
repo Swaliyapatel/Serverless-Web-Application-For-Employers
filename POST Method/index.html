@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>post data in dynamodb</title>
+	  <meta name="viewport" content="width=device-width, initial-scale=1">
+     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Allerta+Stencil">
+	 <style>
+     .w3-allerta {
+      font-family: "Allerta Stencil",Sans-serif,cursive;
+      }
+    </style>
+	
+    <meta charset="utf-8" />
+    <script src="jquery-3.1.1.min.js"></script>
+    <script src="knockout-3.4.2.js"></script>
+    <script type="text/javascript">
+        
+
+		jQuery.support.cors = true;
+		
+        $(document).ready(function() {
+
+            var customerDetailsViewModel = function() {
+            var self = this;
+			
+	        self.EmailID = ko.observable("");
+            self.FirstName = ko.observable("");
+            self.LastName = ko.observable("");
+	        self.Age = ko.observable("");
+	        self.ApplicationID = ko.observable("");
+	        self.JoiningDate = ko.observable("");
+	        self.Salary = ko.observable("");
+	        self.Position = ko.observable("");
+	        self.mobileNO= ko.observable("");
+            self.SuccessMessage = ko.observable("");
+			
+			
+			
+			
+
+            self.SaveCustomerDetails = function () {              
+                
+				var CustomerDetail = {
+				
+				EmailID: self.EmailID(),
+				FirstName: self.FirstName(),
+				LastName: self.LastName(),
+				Age: self.Age(),
+				ApplicationID: self.ApplicationID(),
+				JoiningDate: self.JoiningDate(),
+				Salary: self.Salary(),
+				Position: self.Position(),
+				mobileNO: self.mobileNO()
+				
+				}
+				
+				
+				
+				
+				
+				$.ajax({
+					crossDomain: true,
+				
+                    url: ' https://xpsr4zh44b.execute-api.us-east-1.amazonaws.com/dev/postemployeedetails',
+					
+					
+                    cache: false,
+                    type: 'POST', 
+                    data: ko.toJSON(CustomerDetail),
+                    success: function (data) {              
+                        self.SuccessMessage(data)
+							self.EmailID('');
+							self.FirstName('');
+							self.LastName('');
+							self.Age('');
+							self.ApplicationID('');
+							self.JoiningDate('');
+							self.Salary('');
+							self.Position('');
+							self.mobileNO('');
+							
+						
+                    }
+					}).fail(
+					
+					
+					function(xhr, textStatus, err){
+					alert("Error happened "+err);
+					
+                });
+            };
+        }
+
+            var viewModel = new customerDetailsViewModel();
+            ko.applyBindings(viewModel);
+         });
+
+       
+    </script>
+</head>
+<body>
+<div class="w3-container w3-aqua w3-center w3-allerta">
+  <p class="w3-xxlarge">Post Employee Details</p>
+</div>
+<HR>
+    <table>
+        <tr>
+            <td>
+				<div>
+				<p>
+					EmailID:
+					<input data-bind='value: EmailID' />
+					
+					</p>
+					
+					<p>
+					
+						FirstName:
+						<input data-bind='value: FirstName' />
+						</p>
+						<p>
+						
+						LastName:
+						<input data-bind='value: LastName' />
+						</p>
+						
+						<p>
+							Age:
+							<input data-bind='value: Age' />
+					    </p>
+						
+						<p>
+							ApplicationID:
+							<input data-bind='value: ApplicationID' />
+					
+						</p>
+						
+						<p>
+							JoiningDate:
+							<input data-bind='value: JoiningDate' />
+					
+						</p>
+						
+						<p>
+							Salary:
+							<input data-bind='value: Salary' />
+					
+						</p>
+						
+						<p>
+							Position:
+							<input data-bind='value: Position' />
+					
+						</p>
+						
+						<p>
+							mobileNO:
+							<input data-bind='value: mobileNO' />
+						
+						</p>
+						
+					</div>
+						
+					<span style ="color: darkolivegreen" data-bind='text : SuccessMessage' />
+					
+				</td>
+				</tr>
+				<tr>
+					<td>
+						<div>
+								<button data-bind="click: $root.SaveCustomerDetails" > Save </button>
+							</div>
+						</td>
+					</tr>
+					
+				</table>
+				
+				</body>
+				</html>
